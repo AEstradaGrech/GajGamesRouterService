@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GajGamesServiceRouter", "GajGamesServiceRouter\GajGamesServiceRouter.csproj", "{032CA7B0-8042-4734-8B8C-BC17A67F8A75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GajGamesServiceRouter.Infrastructure", "GajGamesServiceRouter.Infrastructure\GajGamesServiceRouter.Infrastructure.csproj", "{B8D75750-166D-41F4-813D-155110F82FB0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{032CA7B0-8042-4734-8B8C-BC17A67F8A75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{032CA7B0-8042-4734-8B8C-BC17A67F8A75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{032CA7B0-8042-4734-8B8C-BC17A67F8A75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{032CA7B0-8042-4734-8B8C-BC17A67F8A75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8D75750-166D-41F4-813D-155110F82FB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8D75750-166D-41F4-813D-155110F82FB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8D75750-166D-41F4-813D-155110F82FB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8D75750-166D-41F4-813D-155110F82FB0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
