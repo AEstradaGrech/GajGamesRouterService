@@ -1,0 +1,159 @@
+{
+  "format": 1,
+  "restore": {
+    "/Volumes/TOSHIBA EXT/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter.csproj": {}
+  },
+  "projects": {
+    "/Volumes/TOSHIBA EXT/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter.Infrastructure/GajGamesServiceRouter.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Volumes/TOSHIBA EXT/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter.Infrastructure/GajGamesServiceRouter.Infrastructure.csproj",
+        "projectName": "GajGamesServiceRouter.Infrastructure",
+        "projectPath": "/Volumes/TOSHIBA EXT/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter.Infrastructure/GajGamesServiceRouter.Infrastructure.csproj",
+        "packagesPath": "/Users/Alvaro/.nuget/packages/",
+        "outputPath": "/Volumes/TOSHIBA EXT/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter.Infrastructure/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/Users/Alvaro/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Consul": {
+              "target": "Package",
+              "version": "[0.7.2.6, )"
+            },
+            "Microsoft.AspNetCore.All": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.0.100/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Volumes/TOSHIBA EXT/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Volumes/TOSHIBA EXT/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter.csproj",
+        "projectName": "GajGamesServiceRouter",
+        "projectPath": "/Volumes/TOSHIBA EXT/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter.csproj",
+        "packagesPath": "/Users/Alvaro/.nuget/packages/",
+        "outputPath": "/Volumes/TOSHIBA EXT/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/Users/Alvaro/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {
+              "/Volumes/TOSHIBA EXT/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter.Infrastructure/GajGamesServiceRouter.Infrastructure.csproj": {
+                "projectPath": "/Volumes/TOSHIBA EXT/GajGamesServiceRouter/GajGamesServiceRouter/GajGamesServiceRouter.Infrastructure/GajGamesServiceRouter.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Consul": {
+              "target": "Package",
+              "version": "[0.7.2.6, )"
+            },
+            "Microsoft.AspNetCore.All": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "Microsoft.AspNetCore.Razor.Design": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[106.11.4, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[4.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.0.100/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
