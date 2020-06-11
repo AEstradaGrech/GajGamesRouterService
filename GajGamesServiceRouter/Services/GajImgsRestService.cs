@@ -13,6 +13,21 @@ namespace GajGamesServiceRouter.Services
         {
         }
 
+        public async Task<ImageDto> GetTestDto()
+        {
+            var restClient = new RestClient(ApiConfig.BaseUrl);
+
+            restClient.UseJson();
+
+            var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Images")}/get-test-dto", Method.GET);
+
+            restReq.RequestFormat = DataFormat.Json;
+
+            Console.WriteLine($"GETTING TEST DTO :: URI --> {restClient.BuildUri(restReq)}");
+
+            return await restClient.GetAsync<ImageDto>(restReq);
+        }
+
         public async Task<ImageDto> GetUserImage(Guid userGuid, string userToken)
         {
             var restClient = new RestClient(ApiConfig.BaseUrl);
@@ -43,6 +58,7 @@ namespace GajGamesServiceRouter.Services
             var uri = restClient.BuildUri(restReq);
 
             Console.WriteLine($"POST IMG URI :: {uri}");
+            Console.WriteLine($"AUTH TOKEN :: {userToken}");
 
             return await restClient.PostAsync<ImageDto>(restReq);
             

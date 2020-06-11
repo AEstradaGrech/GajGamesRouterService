@@ -8,5 +8,6 @@ namespace GajGamesServiceRouter.Services
     {
         Task<ImageDto> PostImage(ImageDto dto, string userToken);
         Task<ImageDto> GetUserImage(Guid userGuid, string userToken);
+        Task<ImageDto> GetTestDto();
     }
 }

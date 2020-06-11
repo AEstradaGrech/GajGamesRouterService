@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GajGamesServiceRouter.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/rtr/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly IGajUsersRestService _gajUsersRestService;

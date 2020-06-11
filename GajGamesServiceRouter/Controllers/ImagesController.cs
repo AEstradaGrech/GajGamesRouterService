@@ -14,7 +14,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace GajGamesServiceRouter.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/rtr/[controller]")]
     public class ImagesController : ControllerBase
     {
         private readonly IGajImgsRestService _gajImgsRestService;
@@ -61,6 +61,22 @@ namespace GajGamesServiceRouter.Controllers
                 if (response != null)
                     return Ok(response);
             }
+
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("get-test-dto")]
+        [Authorize(Policy ="Anonymous")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetTestDto()
+        {
+
+            var response = await _gajImgsRestService.GetTestDto();
+
+            if (response != null)
+                return Ok(response);         
 
             return BadRequest();
         }
