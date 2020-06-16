@@ -30,7 +30,7 @@ namespace GajGamesServiceRouter.Extensions
 
         public static AuthorizationOptions SetAnonymousTokenPolicy(this AuthorizationOptions options)
         {
-            var scopes = new List<string> { "anonymous", "pr-bronze", "pr-silver", "pr-gold", "empolyee" };
+            var scopes = new List<string> { "anonymous", "customer","pr-bronze", "pr-silver", "pr-gold", "empolyee" };
 
             options.AddPolicy("Anonymous", policy => policy.RequireScope(scopes));
 
@@ -48,7 +48,7 @@ namespace GajGamesServiceRouter.Extensions
 
         private static AuthorizationOptions SetCustomersPolicy(this AuthorizationOptions options)
         {
-            var scopes = new List<string> { "employee" , "pr-bronze", "pr-silver", "pr-gold" };
+            var scopes = new List<string> { "employee" , "customer", "pr-bronze", "pr-silver", "pr-gold" };
 
             options.AddPolicy("Customers", policy => policy.RequireScope(scopes));
 

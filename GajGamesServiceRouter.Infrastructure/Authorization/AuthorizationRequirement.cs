@@ -18,11 +18,11 @@ namespace GajGamesServiceRouter.Infrastructure.Authorization
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthorizationRequirement requirement)
         {
             var roleClaims = context.User
-                                   .Identities
-                                   .First()
-                                   .Claims
-                                   .Where(c => c.Type.Contains("role"))
-                                   .ToList();
+                                    .Identities
+                                    .First()
+                                    .Claims
+                                    .Where(c => c.Type.Contains("role"))
+                                    .ToList();
 
             roleClaims.ForEach(r =>
             {
