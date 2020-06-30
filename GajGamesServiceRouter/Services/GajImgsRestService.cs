@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GajGamesServiceRouter.Infrastructure.ApiConfigurations;
 using GajGamesServiceRouter.Infrastructure.Dtos;
@@ -11,6 +12,39 @@ namespace GajGamesServiceRouter.Services
     {
         public GajImgsRestService(IOptions<GajImgsApiConfiguration> apiConfig) : base(apiConfig)
         {
+        }
+
+        public async Task<ImageDto> GetGameImageByGameTitle(string gameTitle, string authToken)
+        {
+            var restClient = new RestClient(ApiConfig.BaseUrl);
+
+            restClient.UseJson();
+
+            var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Images")}/get-game-img", Method.GET);
+
+            restReq.RequestFormat = DataFormat.Json;
+
+            restReq.AddParameter("gameTitle", $"{gameTitle}")
+                   .AddHeader("Authorization", authToken);
+
+            Console.WriteLine($"GET GAME IMG :: URI --> {restClient.BuildUri(restReq)}");
+
+            return await restClient.GetAsync<ImageDto>(restReq);
+        }
+    
+
+        public async Task<IEnumerable<ImageDto>> GetGamesImageByGameTitle(IEnumerable<string> gameTitles, string authToken)
+        {
+            var restClient = new RestClient(ApiConfig.BaseUrl);
+
+            var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Images")}/get-game-imgs", Method.POST);
+
+            restReq.AddJsonBody(gameTitles)
+                   .AddHeader("Authorization", authToken);
+            
+            Console.WriteLine($"GET GAME IMGS URI :: {restClient.BuildUri(restReq)}");
+            
+            return await restClient.PostAsync<IEnumerable<ImageDto>>(restReq);
         }
 
         public async Task<ImageDto> GetTestDto()
@@ -56,10 +90,7 @@ namespace GajGamesServiceRouter.Services
                    .AddHeader("Authorization", userToken);
 
             var uri = restClient.BuildUri(restReq);
-
-            Console.WriteLine($"POST IMG URI :: {uri}");
-            Console.WriteLine($"AUTH TOKEN :: {userToken}");
-
+                        
             return await restClient.PostAsync<ImageDto>(restReq);
             
         }
