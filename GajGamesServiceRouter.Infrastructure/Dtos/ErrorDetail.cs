@@ -10,7 +10,7 @@ namespace GajGamesServiceRouter.Infrastructure.Dtos
 
         public override string ToString()
         {
-            return JsonConvert.ToString(this);
+            return JsonConvert.SerializeObject(this);
         }
     }
 }

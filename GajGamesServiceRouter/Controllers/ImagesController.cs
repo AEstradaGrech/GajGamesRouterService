@@ -27,7 +27,7 @@ namespace GajGamesServiceRouter.Controllers
 
         [HttpPost]
         [Route("post-img")]
-        [Authorize(Policy = "Customers")]
+        //[Authorize(Policy = "Customers")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> PostImage([FromBody]ImageDto dto)
@@ -47,7 +47,7 @@ namespace GajGamesServiceRouter.Controllers
 
         [HttpGet]
         [Route("get-user-img")]
-        [Authorize(Policy = "Customers")]
+        //[Authorize(Policy = "Customers")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetUserImage([FromQuery]Guid userGuid)
@@ -67,7 +67,7 @@ namespace GajGamesServiceRouter.Controllers
 
         [HttpGet]
         [Route("get-test-dto")]
-        [Authorize(Policy ="Anonymous")]
+        //[Authorize(Policy ="Anonymous")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetTestDto()

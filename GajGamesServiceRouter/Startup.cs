@@ -43,8 +43,8 @@ namespace GajGamesServiceRouter
             });
 
             services.RegisterServices()
-                    .AddApiConfigurations(Configuration)
-                    .ConfigureConsul(Configuration);
+                    .AddApiConfigurations(Configuration);
+                    //.ConfigureConsul(Configuration);
 
             var cert = new X509Certificate2(Path.Combine(".", "GajCert.pfx"), "gajgames");
 
@@ -53,32 +53,32 @@ namespace GajGamesServiceRouter
 
             var key = new X509SecurityKey(cert);
 
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //services.AddAuthentication(x =>
+            //{
+            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = key,
-                    ValidateIssuer = true,
-                    ValidateAudience = false,
-                    //ValidateLifetime = true,
-                    //LifetimeValidator = LifetimeValidator,
-                    //ValidIssuer = "http://localhost:5000"
-                    // DockerIssuer
-                    ValidIssuer = "http://gaj-ids4"
+            //})
+            //.AddJwtBearer(x =>
+            //{
+            //    x.RequireHttpsMetadata = false;
+            //    x.SaveToken = true;
+            //    x.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuerSigningKey = true,
+            //        IssuerSigningKey = key,
+            //        ValidateIssuer = true,
+            //        ValidateAudience = false,
+            //        //ValidateLifetime = true,
+            //        //LifetimeValidator = LifetimeValidator,
+            //        //ValidIssuer = "http://localhost:5000"
+            //        // DockerIssuer
+            //        ValidIssuer = "http://gaj-ids4"
 
-                };
-            });
+            //    };
+            //});
 
-            services.SetAuthorizationPolicies();
+            //services.SetAuthorizationPolicies();
 
             services.AddSwaggerGen(config =>
             {
@@ -101,7 +101,7 @@ namespace GajGamesServiceRouter
             
             app.ConfigureGlobalExceptionHandler()
                .UseHttpsRedirection()
-               .UseAuthentication()
+               //.UseAuthentication()
                .UseMvc()               
                .UseSwagger()
                .UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json","GajRouter"));

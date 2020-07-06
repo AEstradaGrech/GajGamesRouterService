@@ -1,46 +1,116 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using GajGamesServiceRouter.Infrastructure.Dtos;
+using GajGamesServiceRouter.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace GajGamesServiceRouter.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/rtr/[controller]")]
     public class StoreController : Controller
     {
-        // GET: api/values
+        private readonly IGajStoreMgmtService _storeMgmtService;
+
+        public StoreController(IGajStoreMgmtService storeMgmtService)
+        {
+            _storeMgmtService = storeMgmtService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Route("get-game-detail")]
+        //[Authorize(Policy = "Customers")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetGameImage([FromQuery]Guid gameId)
         {
-            return new string[] { "value1", "value2" };
+            var authToken = await GetAuthToken(Request);
+
+            if (!string.IsNullOrEmpty(authToken))
+            {
+                var response = await _storeMgmtService.GetGameByGameId(gameId , authToken);
+
+                if (response != null)
+                    return Ok(response);
+            }
+
+            return BadRequest();
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        [Route("get-by-studio-name")]
+        //[Authorize(Policy = "Customers")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetGamesByStudioName([FromQuery]string studioName)
         {
-            return "value";
+            var authToken = await GetAuthToken(Request);
+
+            if (!string.IsNullOrEmpty(authToken))
+            {
+                var response = await _storeMgmtService.GetByStudioName(studioName, authToken);
+
+                if (response != null)
+                    return Ok(response);
+            }
+
+            return BadRequest();
         }
 
-        // POST api/values
+        [HttpGet]
+        [Route("get-studio-by-name")]
+        //[Authorize(Policy = "Customers")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetStudioByName([FromQuery]string studioName)
+        {
+            var authToken = await GetAuthToken(Request);
+
+            if (!string.IsNullOrEmpty(authToken))
+            {
+                var response = await _storeMgmtService.GetStudioByName(studioName, authToken);
+
+                if (response != null)
+                    return Ok(response);
+            }
+
+            return BadRequest();
+        }
+
         [HttpPost]
-        public void Post([FromBody]string value)
+        [Route("get-by-catalogue-filter")]
+        //[Authorize(Policy = "Anonymous")]
+        [ProducesResponseType(typeof(CatalogueResponseDto),(int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetByFilter([FromBody]CatalogueFilter filter)
         {
+            // var authToken = await GetAuthToken(Request);
+            var authToken = "test";
+
+            if (!string.IsNullOrEmpty(authToken))
+            {
+                var response = await _storeMgmtService.GetByFilter(filter, authToken);
+
+                if (response != null)
+                    return Ok(response);
+            }
+
+            return BadRequest();
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+
+        private async Task<string> GetAuthToken(HttpRequest request)
         {
+            StringValues authHeader;
+            request.Headers.TryGetValue("Authorization", out authHeader);
+            return authHeader;
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

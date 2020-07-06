@@ -1,7 +1,7 @@
 ﻿using System;
 namespace GajGamesServiceRouter.Infrastructure.ApiConfigurations
 {
-    public class GajStoreApiConfiguration
+    public class GajStoreApiConfiguration : ApiConfiguration
     {
         public GajStoreApiConfiguration()
         {

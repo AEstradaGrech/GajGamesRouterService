@@ -10,7 +10,7 @@ namespace GajGamesServiceRouter.Services
 {
     public class GajStoreRestService : RestServiceBase<GajStoreApiConfiguration>, IGajStoreRestService
     {
-        public GajStoreRestService(IOptions<GajStoreApiConfiguration>options) : base(options)
+        public GajStoreRestService(IOptions<GajStoreApiConfiguration>apiConfig) : base(apiConfig)
         {
         }
 
@@ -20,7 +20,7 @@ namespace GajGamesServiceRouter.Services
 
             restClient.UseJson();
 
-            var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Games")}/get-by-gameId", Method.GET);
+            var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Games")}/get-game-detail", Method.GET);
 
             restReq.RequestFormat = DataFormat.Json;
 
@@ -66,6 +66,20 @@ namespace GajGamesServiceRouter.Services
             Console.WriteLine($"GET STUDIO BY STUDIO NAME :: URI --> {restClient.BuildUri(restReq)}");
 
             return await restClient.GetAsync<StudioDto>(restReq);
+        }
+
+        public async Task<CatalogueResponseDto> GetByFilter(CatalogueFilter filter, string authToken)
+        {
+            var restClient = new RestClient(ApiConfig.BaseUrl);            
+
+            var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Games")}/get-by-catalogue-filter", Method.POST);
+
+            restReq.AddJsonBody(filter);
+                   //.AddHeader("Authorization", authToken);
+
+            Console.WriteLine($"GET BY FILTER :: URI --> {restClient.BuildUri(restReq)}");
+
+            return await restClient.PostAsync<CatalogueResponseDto>(restReq);
         }
     }
 }

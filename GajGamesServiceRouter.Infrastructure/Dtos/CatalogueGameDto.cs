@@ -16,7 +16,8 @@ namespace GajGamesServiceRouter.Infrastructure.Dtos
         public string Genre { get; set; }
         public decimal? Price { get; set; }
         public PEGI PEGI { get; set; }
-        public ICollection<GamePromotionDto> GamePromotions { get; set; }
+        public List<GamePromotionDto> GamePromotions { get; set; }
         public string GameImgB64 { get; set; }
+
     }
 }

@@ -21,6 +21,8 @@ namespace GajGamesServiceRouter.Extensions
         {
             services.AddScoped<IGajImgsRestService, GajImgsRestService>();
             services.AddScoped<IGajUsersRestService, GajUsersRestService>();
+            services.AddScoped<IGajStoreRestService, GajStoreRestService>();
+            services.AddScoped<IGajStoreMgmtService, GajStoreMgmtService>();
 
             return services;
         }
@@ -28,7 +30,8 @@ namespace GajGamesServiceRouter.Extensions
         public static IServiceCollection AddApiConfigurations(this IServiceCollection services, IConfiguration config)
         {
             return services.Configure<GajImgsApiConfiguration>(config.GetSection(nameof(GajImgsApiConfiguration)))
-                           .Configure<GajUsersApiConfiguration>(config.GetSection(nameof(GajUsersApiConfiguration)));
+                           .Configure<GajUsersApiConfiguration>(config.GetSection(nameof(GajUsersApiConfiguration)))
+                           .Configure<GajStoreApiConfiguration>(config.GetSection(nameof(GajStoreApiConfiguration)));
         }
 
         public static IApplicationBuilder ConfigureGlobalExceptionHandler(this IApplicationBuilder app)
