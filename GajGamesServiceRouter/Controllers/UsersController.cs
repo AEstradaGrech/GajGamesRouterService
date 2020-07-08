@@ -23,7 +23,7 @@ namespace GajGamesServiceRouter.Controllers
 
         [HttpGet]
         [Route("get-user-by-nickame")]
-       // [Authorize(Policy="Customers")]
+        [Authorize(Policy="Customers")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult>GetUserByNickname([FromQuery]string userNick)

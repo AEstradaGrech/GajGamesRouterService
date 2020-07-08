@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using GajGamesServiceRouter.Infrastructure.Dtos;
 using GajGamesServiceRouter.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -25,7 +26,7 @@ namespace GajGamesServiceRouter.Controllers
 
         [HttpGet]
         [Route("get-game-detail")]
-        //[Authorize(Policy = "Customers")]
+        [Authorize(Policy = "Customers")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetGameImage([FromQuery]Guid gameId)
@@ -45,7 +46,7 @@ namespace GajGamesServiceRouter.Controllers
 
         [HttpGet]
         [Route("get-by-studio-name")]
-        //[Authorize(Policy = "Customers")]
+        [Authorize(Policy = "Customers")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetGamesByStudioName([FromQuery]string studioName)
@@ -65,7 +66,7 @@ namespace GajGamesServiceRouter.Controllers
 
         [HttpGet]
         [Route("get-studio-by-name")]
-        //[Authorize(Policy = "Customers")]
+        [Authorize(Policy = "Customers")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetStudioByName([FromQuery]string studioName)
@@ -85,13 +86,14 @@ namespace GajGamesServiceRouter.Controllers
 
         [HttpPost]
         [Route("get-by-catalogue-filter")]
-        //[Authorize(Policy = "Anonymous")]
+        [Authorize(Policy = "Anonymous")]
         [ProducesResponseType(typeof(CatalogueResponseDto),(int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetByFilter([FromBody]CatalogueFilter filter)
         {
-            // var authToken = await GetAuthToken(Request);
-            var authToken = "test";
+            var authToken = await GetAuthToken(Request);
+
+            Console.WriteLine("RTR GET BY FILTER ENDPOINT");            
 
             if (!string.IsNullOrEmpty(authToken))
             {

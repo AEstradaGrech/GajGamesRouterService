@@ -74,8 +74,8 @@ namespace GajGamesServiceRouter.Services
 
             var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Games")}/get-by-catalogue-filter", Method.POST);
 
-            restReq.AddJsonBody(filter);
-                   //.AddHeader("Authorization", authToken);
+            restReq.AddJsonBody(filter)
+                   .AddHeader("Authorization", authToken);
 
             Console.WriteLine($"GET BY FILTER :: URI --> {restClient.BuildUri(restReq)}");
 

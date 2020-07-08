@@ -39,8 +39,8 @@ namespace GajGamesServiceRouter.Services
 
             var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Images")}/get-catalogue-imgs", Method.POST);
 
-            restReq.AddJsonBody(gameTitles);
-                  // .AddHeader("Authorization", authToken);
+            restReq.AddJsonBody(gameTitles)
+                   .AddHeader("Authorization", authToken);
             
             Console.WriteLine($"GET GAME IMGS URI :: {restClient.BuildUri(restReq)}");
             

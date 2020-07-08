@@ -82,11 +82,15 @@ namespace GajGamesServiceRouter.Services
         {
             var catalogueResponse = await _storeService.GetByFilter(filter, authToken);
 
+            Console.WriteLine($"RTR - GamesByFilterCount {catalogueResponse.Games.Count}");
+
             if(catalogueResponse != null && catalogueResponse.Games.Count() > 0)
             {
                 var imgNames = catalogueResponse.Games.Select(g => g.Title);
 
                 var images = await _imgsService.GetGamesImageByGameTitle(imgNames, authToken);
+
+                Console.WriteLine($"RTR - GetCatalogueGamesImgCount {images.Count()}");
 
                 var dtosWithImg = await AddImgsToGames(catalogueResponse.Games, images);
 
