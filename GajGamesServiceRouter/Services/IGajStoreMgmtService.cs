@@ -11,5 +11,7 @@ namespace GajGamesServiceRouter.Services
         Task<IEnumerable<CatalogueGameDto>> GetByStudioName(string studioName, string authToken);
         Task<StudioDto> GetStudioByName(string studioName, string authToken);
         Task<CatalogueResponseDto> GetByFilter(CatalogueFilter filter, string authToken);
+        Task<IEnumerable<string>> GetStudioNames(string authToken);
+        Task<IEnumerable<string>> GetGameGenres(string authToken);
     }
 }

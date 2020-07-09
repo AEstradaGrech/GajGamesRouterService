@@ -81,5 +81,35 @@ namespace GajGamesServiceRouter.Services
 
             return await restClient.PostAsync<CatalogueResponseDto>(restReq);
         }
+
+        public async Task<IEnumerable<string>> GetStudioNames(string authToken)
+        {
+            var restClient = new RestClient(ApiConfig.BaseUrl);
+
+            restClient.UseJson();
+
+            var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Studios")}/get-studio-names", Method.GET);            
+
+            restReq.RequestFormat = DataFormat.Json;
+
+            restReq.AddHeader("Authorization", authToken);
+
+            return await restClient.GetAsync<IEnumerable<string>>(restReq);
+        }
+
+        public async Task<IEnumerable<string>> GetGameGenres(string authToken)
+        {
+            var restClient = new RestClient(ApiConfig.BaseUrl);
+
+            restClient.UseJson();
+
+            var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Games")}/get-game-genres", Method.GET);
+
+            restReq.RequestFormat = DataFormat.Json;
+
+            restReq.AddHeader("Authorization", authToken);
+
+            return await restClient.GetAsync<IEnumerable<string>>(restReq);
+        }
     }
 }

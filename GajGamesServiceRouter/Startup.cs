@@ -95,7 +95,8 @@ namespace GajGamesServiceRouter
                 app.UseHsts();
             }            
             
-            app.ConfigureGlobalExceptionHandler()
+            app.UseCors("CorsPolicy")
+               .ConfigureGlobalExceptionHandler()
                .UseHttpsRedirection()
                .UseAuthentication()
                .UseMvc()               

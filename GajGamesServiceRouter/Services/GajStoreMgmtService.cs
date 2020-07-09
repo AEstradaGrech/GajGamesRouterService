@@ -99,5 +99,15 @@ namespace GajGamesServiceRouter.Services
 
             return catalogueResponse;
         }
+
+        public async Task<IEnumerable<string>> GetStudioNames(string authToken)
+        {
+            return await _storeService.GetStudioNames(authToken);
+        }
+
+        public async Task<IEnumerable<string>> GetGameGenres(string authToken)
+        {
+            return await _storeService.GetGameGenres(authToken);
+        }
     }
 }

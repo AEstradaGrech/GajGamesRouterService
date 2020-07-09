@@ -106,6 +106,46 @@ namespace GajGamesServiceRouter.Controllers
             return BadRequest();
         }
 
+        [HttpGet]
+        [Route("get-studio-names")]
+        [Authorize(Policy = "Anonymous")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetStudiNames()
+        {
+            var authToken = await GetAuthToken(Request);
+
+            if (!string.IsNullOrEmpty(authToken))
+            {
+                var response = await _storeMgmtService.GetStudioNames(authToken);
+
+                if (response != null)
+                    return Ok(response);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("get-game-genres")]
+        [Authorize(Policy = "Anonymous")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetGameGenres()
+        {
+            var authToken = await GetAuthToken(Request);
+
+            if (!string.IsNullOrEmpty(authToken))
+            {
+                var response = await _storeMgmtService.GetGameGenres(authToken);
+
+                if (response != null)
+                    return Ok(response);
+            }
+
+            return BadRequest();
+        }
+
 
         private async Task<string> GetAuthToken(HttpRequest request)
         {
