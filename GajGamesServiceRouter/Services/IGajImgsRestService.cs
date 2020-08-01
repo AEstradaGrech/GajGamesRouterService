@@ -11,6 +11,6 @@ namespace GajGamesServiceRouter.Services
         Task<ImageDto> GetUserImage(Guid userGuid, string userToken);
         Task<ImageDto> GetTestDto();
         Task<ImageDto> GetGameImageByGameTitle(string gameTitle, string authToken);
-        Task<IEnumerable<ImageDto>> GetGamesImageByGameTitle(IEnumerable<string> gameTitles, string authToken);
+        Task<IEnumerable<ImageDto>> GetGameImagesByGameTitle(IEnumerable<string> gameTitles, string authToken);
     }
 }

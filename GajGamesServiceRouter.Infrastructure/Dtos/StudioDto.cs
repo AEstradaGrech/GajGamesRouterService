@@ -12,6 +12,6 @@ namespace GajGamesServiceRouter.Infrastructure.Dtos
 
         public string StudioName { get; set; }
         public DateTime Established { get; set; }
-        public ICollection<CatalogueGameDto> StudioGames { get; set; }
+        public IList<CatalogueGameDto> StudioGames { get; set; }
     }
 }

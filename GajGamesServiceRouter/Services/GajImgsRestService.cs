@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GajGamesServiceRouter.Infrastructure.ApiConfigurations;
 using GajGamesServiceRouter.Infrastructure.Dtos;
+using GajGamesServiceRouter.Infrastructure.Enums;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
@@ -20,11 +21,12 @@ namespace GajGamesServiceRouter.Services
 
             restClient.UseJson();
 
-            var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Images")}/get-game-img", Method.GET);
+            var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Images")}/get-by-name-and-category", Method.GET);
 
             restReq.RequestFormat = DataFormat.Json;
 
-            restReq.AddParameter("gameTitle", $"{gameTitle}")
+            restReq.AddParameter("imgName", $"{gameTitle}")
+                   .AddParameter("category", $"{ImgCategory.GamesCatalogue}") //TODO add GameDetail Image to ImgService
                    .AddHeader("Authorization", authToken);
 
             Console.WriteLine($"GET GAME IMG :: URI --> {restClient.BuildUri(restReq)}");
@@ -33,7 +35,7 @@ namespace GajGamesServiceRouter.Services
         }
     
 
-        public async Task<IEnumerable<ImageDto>> GetGamesImageByGameTitle(IEnumerable<string> gameTitles, string authToken)
+        public async Task<IEnumerable<ImageDto>> GetGameImagesByGameTitle(IEnumerable<string> gameTitles, string authToken)
         {
             var restClient = new RestClient(ApiConfig.BaseUrl);
 

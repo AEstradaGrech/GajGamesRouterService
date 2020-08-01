@@ -13,7 +13,7 @@ namespace GajGamesServiceRouter.Infrastructure.Dtos
 
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public string Genre { get; set; }
+        public string Genre { get; set; }        
         public decimal? Price { get; set; }
         public PEGI PEGI { get; set; }
         public List<GamePromotionDto> GamePromotions { get; set; }

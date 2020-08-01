@@ -40,7 +40,7 @@ namespace GajGamesServiceRouter.Services
             {
                 var gameTitles = games.Select(g => g.Title);
 
-                var imgs = await _imgsService.GetGamesImageByGameTitle(gameTitles, authToken);
+                var imgs = await _imgsService.GetGameImagesByGameTitle(gameTitles, authToken);
 
                 games = await AddImgsToGames(games, imgs);                
             }
@@ -67,11 +67,11 @@ namespace GajGamesServiceRouter.Services
 
             if(studio != null)
             {
-                var imgs = await _imgsService.GetGamesImageByGameTitle(studio.StudioGames.Select(g => g.Title), authToken);
+                var imgs = await _imgsService.GetGameImagesByGameTitle(studio.StudioGames.Select(g => g.Title), authToken);
 
                 if(imgs != null || imgs.Count() > 0)
                 {
-                    studio.StudioGames = await AddImgsToGames(studio.StudioGames, imgs) as ICollection<CatalogueGameDto>;
+                    studio.StudioGames = await AddImgsToGames(studio.StudioGames, imgs) as List<CatalogueGameDto>;
                 }
             }
 
@@ -80,17 +80,13 @@ namespace GajGamesServiceRouter.Services
 
         public async Task<CatalogueResponseDto> GetByFilter(CatalogueFilter filter, string authToken)
         {
-            var catalogueResponse = await _storeService.GetByFilter(filter, authToken);
-
-            Console.WriteLine($"RTR - GamesByFilterCount {catalogueResponse.Games.Count}");
+            var catalogueResponse = await _storeService.GetByFilter(filter, authToken);           
 
             if(catalogueResponse != null && catalogueResponse.Games.Count() > 0)
             {
                 var imgNames = catalogueResponse.Games.Select(g => g.Title);
 
-                var images = await _imgsService.GetGamesImageByGameTitle(imgNames, authToken);
-
-                Console.WriteLine($"RTR - GetCatalogueGamesImgCount {images.Count()}");
+                var images = await _imgsService.GetGameImagesByGameTitle(imgNames, authToken);                
 
                 var dtosWithImg = await AddImgsToGames(catalogueResponse.Games, images);
 
