@@ -14,6 +14,7 @@ namespace GajGamesServiceRouter.Infrastructure.Dtos
         public bool IsOnline { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public List<StudioDto> GameStudios { get; set; }
+        public string Description { get; set; }
     }
  
 }

@@ -26,10 +26,10 @@ namespace GajGamesServiceRouter.Controllers
 
         [HttpGet]
         [Route("get-game-detail")]
-        [Authorize(Policy = "Customers")]
+        [Authorize(Policy = "Anonymous")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetGameImage([FromQuery]Guid gameId)
+        public async Task<IActionResult> GetGameDetail([FromQuery]Guid gameId)
         {
             var authToken = await GetAuthToken(Request);
 
@@ -46,7 +46,7 @@ namespace GajGamesServiceRouter.Controllers
 
         [HttpGet]
         [Route("get-by-studio-name")]
-        [Authorize(Policy = "Customers")]
+        [Authorize(Policy = "Anonymous")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetGamesByStudioName([FromQuery]string studioName)
