@@ -18,10 +18,12 @@ namespace GajGamesServiceRouter.Controllers
     public class StoreController : Controller
     {
         private readonly IGajStoreMgmtService _storeMgmtService;
+        private readonly IRedisService _redisService;
 
-        public StoreController(IGajStoreMgmtService storeMgmtService)
+        public StoreController(IGajStoreMgmtService storeMgmtService, IRedisService redisService)
         {
             _storeMgmtService = storeMgmtService;
+            _redisService = redisService;
         }
 
         [HttpGet]
@@ -144,6 +146,33 @@ namespace GajGamesServiceRouter.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("test-get-redis-key")]
+        //[Authorize(Policy = "Anonymous")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetRedisKey([FromQuery]string key)
+        {
+            var response = await _redisService.GetKeyValue(key);
+
+            if (!string.IsNullOrEmpty(response))
+                return Ok(response);
+            
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("test-set-redis-key")]
+        //[Authorize(Policy = "Anonymous")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> SetRedisKey([FromQuery]string key, string value)
+        {
+            var response = await _redisService.SetKey(key, value);
+            
+            return Ok(response);            
         }
 
 

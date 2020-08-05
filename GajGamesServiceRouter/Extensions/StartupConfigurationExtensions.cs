@@ -23,6 +23,7 @@ namespace GajGamesServiceRouter.Extensions
             services.AddScoped<IGajUsersRestService, GajUsersRestService>();
             services.AddScoped<IGajStoreRestService, GajStoreRestService>();
             services.AddScoped<IGajStoreMgmtService, GajStoreMgmtService>();
+            services.AddScoped<IRedisService, RedisService>();
 
             return services;
         }

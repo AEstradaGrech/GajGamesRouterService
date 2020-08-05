@@ -41,8 +41,8 @@ namespace GajGamesServiceRouter
 
             services.RegisterServices()
                     .AddApiConfigurations(Configuration)
-                    .SetAuthorizationPolicies()
-                    .ConfigureConsul(Configuration);
+                    .SetAuthorizationPolicies();
+                    //.ConfigureConsul(Configuration);
 
             var cert = new X509Certificate2(Path.Combine(".", "GajCert.pfx"), "gajgames");
 
@@ -98,7 +98,7 @@ namespace GajGamesServiceRouter
             app.UseCors("CorsPolicy")
                .ConfigureGlobalExceptionHandler()
                .UseHttpsRedirection()
-               .UseAuthentication()
+               //.UseAuthentication()
                .UseMvc()               
                .UseSwagger()
                .UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json","GajRouter"));
