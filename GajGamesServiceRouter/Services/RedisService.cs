@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using StackExchange.Redis;
+using Newtonsoft.Json;
+using GajGamesServiceRouter.Infrastructure.Dtos;
 
 namespace GajGamesServiceRouter.Services
 {
@@ -11,7 +13,7 @@ namespace GajGamesServiceRouter.Services
         }
 
         public async Task<string> GetKeyValue(string key)
-        {
+        {                        
             var redis = ConnectionMultiplexer.Connect("gaj-redis:6379");
             var db = redis.GetDatabase();
             return await db.StringGetAsync(key);

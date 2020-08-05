@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GajGamesServiceRouter.Infrastructure.Dtos;
+using Newtonsoft.Json;
 
 namespace GajGamesServiceRouter.Services
 {
@@ -10,11 +11,13 @@ namespace GajGamesServiceRouter.Services
     {
         private readonly IGajStoreRestService _storeService;
         private readonly IGajImgsRestService _imgsService;
+        private readonly IRedisService _redisService;
 
-        public GajStoreMgmtService(IGajStoreRestService storeServcice, IGajImgsRestService imgsService)
+        public GajStoreMgmtService(IGajStoreRestService storeServcice, IGajImgsRestService imgsService, IRedisService redisService)
         {
             _storeService = storeServcice;
             _imgsService = imgsService;
+            _redisService = redisService;
         }
 
         public async Task<GameDetailDto> GetGameByGameId(Guid gameId, string authToken)
@@ -91,6 +94,8 @@ namespace GajGamesServiceRouter.Services
                 var dtosWithImg = await AddImgsToGames(catalogueResponse.Games, images);
 
                 catalogueResponse.Games = dtosWithImg.ToList();
+
+                await CacheCatalogueResponse(catalogueResponse);
             }
 
             return catalogueResponse;
@@ -104,6 +109,15 @@ namespace GajGamesServiceRouter.Services
         public async Task<IEnumerable<string>> GetGameGenres(string authToken)
         {
             return await _storeService.GetGameGenres(authToken);
+        }
+
+        private async Task<bool> CacheCatalogueResponse(CatalogueResponseDto response)
+        {
+            var json = JsonConvert.SerializeObject(response);
+
+            var catalogueGuid = $"UserNick-{Guid.NewGuid().ToString()}-{DateTime.Now}";
+
+            return await _redisService.SetKey(catalogueGuid, json);
         }
     }
 }
