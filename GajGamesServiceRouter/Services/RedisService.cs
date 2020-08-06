@@ -20,9 +20,9 @@ namespace GajGamesServiceRouter.Services
 
         public RedisService(IOptions<RedisConfiguration> redisOptions, IHttpContextAccessor httpContextAccessor)
         {
-            _httpContextAccessor = httpContextAccessor;
-            _redisMultiplexer = ConnectionMultiplexer.Connect($"{_redisConfiguration.Host}:{_redisConfiguration.Port}");
             _redisConfiguration = redisOptions.Value;
+            _httpContextAccessor = httpContextAccessor;                        
+            _redisMultiplexer = ConnectionMultiplexer.Connect($"{_redisConfiguration.Host}:{_redisConfiguration.Port}");
         }
 
         private IDatabase GetDataBase() => _redisMultiplexer.GetDatabase();
@@ -31,7 +31,7 @@ namespace GajGamesServiceRouter.Services
         {
             var subClaim = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type.Contains("nameidentifier"));
 
-            return $"{subClaim.Value}-{redisNamespace.GetType().Name}:{redisNamespace}";
+            return $"{subClaim.Value}-{redisNamespace}";
         }
 
         public async Task<string> GetKeyStringValue(string key)

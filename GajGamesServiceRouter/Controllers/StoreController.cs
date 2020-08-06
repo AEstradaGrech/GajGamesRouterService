@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using GajGamesServiceRouter.Infrastructure.Dtos;
+using GajGamesServiceRouter.Infrastructure.Enums;
 using GajGamesServiceRouter.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -138,14 +139,10 @@ namespace GajGamesServiceRouter.Controllers
         [Authorize(Policy = "Anonymous")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> SetRedisKey([FromQuery]string key, string value)
-        {            
-                  
-            var claims = HttpContext.User.Claims.Where(c => c.Type.Contains("nameidentifier"));
+        public async Task<IActionResult> SetRedisStringKey([FromQuery]string value)
+        {
+            var key = await _redisService.GenerateUserRedisKey(RedisNamespace.CatalogueResponse);
 
-            if (claims.Count() > 0)
-                key += $"-{claims.FirstOrDefault().Value}";
-         
             var response = await _redisService.SetStringKey(key, value);
             
             return Ok(response);            
