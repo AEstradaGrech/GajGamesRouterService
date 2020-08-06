@@ -20,13 +20,13 @@ namespace GajGamesServiceRouter.Services
             _redisService = redisService;
         }
 
-        public async Task<GameDetailDto> GetGameByGameId(Guid gameId, string authToken)
+        public async Task<GameDetailDto> GetGameByGameId(Guid gameId)
         {
-            var game = await _storeService.GetGameByGameId(gameId, authToken);
+            var game = await _storeService.GetGameByGameId(gameId);
 
             if(game != null)
             {
-                var gameImg = await _imgsService.GetGameImageByGameTitle(game.Title, authToken);
+                var gameImg = await _imgsService.GetGameImageByGameTitle(game.Title);
 
                 if (gameImg != null)
                     game.GameImgB64 = gameImg.ImgBase64;
@@ -35,15 +35,15 @@ namespace GajGamesServiceRouter.Services
             return game;
         }
 
-        public async Task<IEnumerable<CatalogueGameDto>> GetByStudioName(string studioName, string authToken)
+        public async Task<IEnumerable<CatalogueGameDto>> GetByStudioName(string studioName)
         {
-            var games = await _storeService.GetByStudioName(studioName, authToken);
+            var games = await _storeService.GetByStudioName(studioName);
 
             if(games != null || games.Count() > 0)
             {
                 var gameTitles = games.Select(g => g.Title);
 
-                var imgs = await _imgsService.GetGameImagesByGameTitle(gameTitles, authToken);
+                var imgs = await _imgsService.GetGameImagesByGameTitle(gameTitles);
 
                 games = await AddImgsToGames(games, imgs);                
             }
@@ -64,13 +64,13 @@ namespace GajGamesServiceRouter.Services
             return games;
         }
 
-        public async Task<StudioDto> GetStudioByName(string studioName, string authToken)
+        public async Task<StudioDto> GetStudioByName(string studioName)
         {
-            var studio = await _storeService.GetStudioByName(studioName, authToken);
+            var studio = await _storeService.GetStudioByName(studioName);
 
             if(studio != null)
             {
-                var imgs = await _imgsService.GetGameImagesByGameTitle(studio.StudioGames.Select(g => g.Title), authToken);
+                var imgs = await _imgsService.GetGameImagesByGameTitle(studio.StudioGames.Select(g => g.Title));
 
                 if(imgs != null || imgs.Count() > 0)
                 {
@@ -81,15 +81,15 @@ namespace GajGamesServiceRouter.Services
             return studio;
         }
 
-        public async Task<CatalogueResponseDto> GetByFilter(CatalogueFilter filter, string authToken)
+        public async Task<CatalogueResponseDto> GetByFilter(CatalogueFilter filter)
         {
-            var catalogueResponse = await _storeService.GetByFilter(filter, authToken);           
+            var catalogueResponse = await _storeService.GetByFilter(filter);           
 
             if(catalogueResponse != null && catalogueResponse.Games.Count() > 0)
             {
                 var imgNames = catalogueResponse.Games.Select(g => g.Title);
 
-                var images = await _imgsService.GetGameImagesByGameTitle(imgNames, authToken);                
+                var images = await _imgsService.GetGameImagesByGameTitle(imgNames);                
 
                 var dtosWithImg = await AddImgsToGames(catalogueResponse.Games, images);
 
@@ -101,14 +101,14 @@ namespace GajGamesServiceRouter.Services
             return catalogueResponse;
         }
 
-        public async Task<IEnumerable<string>> GetStudioNames(string authToken)
+        public async Task<IEnumerable<string>> GetStudioNames()
         {
-            return await _storeService.GetStudioNames(authToken);
+            return await _storeService.GetStudioNames();
         }
 
-        public async Task<IEnumerable<string>> GetGameGenres(string authToken)
+        public async Task<IEnumerable<string>> GetGameGenres()
         {
-            return await _storeService.GetGameGenres(authToken);
+            return await _storeService.GetGameGenres();
         }
 
         private async Task<bool> CacheCatalogueResponse(CatalogueResponseDto response)

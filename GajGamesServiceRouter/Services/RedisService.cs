@@ -26,7 +26,7 @@ namespace GajGamesServiceRouter.Services
         public async Task<string> GetKeyValue(string key)
         {
             var subClaim = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type.Contains("nameidentifier"));
-            var redis = ConnectionMultiplexer.Connect("localhost:6379");
+            var redis = ConnectionMultiplexer.Connect("gaj-redis:6379");
             var db = redis.GetDatabase();
             return await db.StringGetAsync(key);
         }
@@ -35,7 +35,7 @@ namespace GajGamesServiceRouter.Services
         {
             var subClaim = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type.Contains("nameidentifier"));
             Console.WriteLine($"HTTP CONTEXT ACCESSOR SUB CLAIM :: {subClaim}");
-            var redis = ConnectionMultiplexer.Connect("localhost:6379");
+            var redis = ConnectionMultiplexer.Connect("gaj-redis:6379");
             var db = redis.GetDatabase();
             return await db.StringSetAsync(key, value);            
         }

@@ -33,16 +33,11 @@ namespace GajGamesServiceRouter.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetGameDetail([FromQuery]Guid gameId)
-        {
-            var authToken = await GetAuthToken(Request);
+        {                              
+            var response = await _storeMgmtService.GetGameByGameId(gameId);
 
-            if (!string.IsNullOrEmpty(authToken))
-            {
-                var response = await _storeMgmtService.GetGameByGameId(gameId , authToken);
-
-                if (response != null)
-                    return Ok(response);
-            }
+            if (response != null)
+                return Ok(response);         
 
             return BadRequest();
         }
@@ -53,16 +48,11 @@ namespace GajGamesServiceRouter.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetGamesByStudioName([FromQuery]string studioName)
-        {
-            var authToken = await GetAuthToken(Request);
+        {                                   
+            var response = await _storeMgmtService.GetByStudioName(studioName);
 
-            if (!string.IsNullOrEmpty(authToken))
-            {
-                var response = await _storeMgmtService.GetByStudioName(studioName, authToken);
-
-                if (response != null)
-                    return Ok(response);
-            }
+            if (response != null)
+                return Ok(response);            
 
             return BadRequest();
         }
@@ -73,16 +63,11 @@ namespace GajGamesServiceRouter.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetStudioByName([FromQuery]string studioName)
-        {
-            var authToken = await GetAuthToken(Request);
+        {                                   
+            var response = await _storeMgmtService.GetStudioByName(studioName);
 
-            if (!string.IsNullOrEmpty(authToken))
-            {
-                var response = await _storeMgmtService.GetStudioByName(studioName, authToken);
-
-                if (response != null)
-                    return Ok(response);
-            }
+            if (response != null)
+                return Ok(response);            
 
             return BadRequest();
         }
@@ -93,18 +78,11 @@ namespace GajGamesServiceRouter.Controllers
         [ProducesResponseType(typeof(CatalogueResponseDto),(int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetByFilter([FromBody]CatalogueFilter filter)
-        {
-            var authToken = await GetAuthToken(Request);
+        {                                                
+            var response = await _storeMgmtService.GetByFilter(filter);
 
-            Console.WriteLine("RTR GET BY FILTER ENDPOINT");            
-
-            if (!string.IsNullOrEmpty(authToken))
-            {
-                var response = await _storeMgmtService.GetByFilter(filter, authToken);
-
-                if (response != null)
-                    return Ok(response);
-            }
+            if (response != null)
+                return Ok(response);          
 
             return BadRequest();
         }
@@ -115,17 +93,12 @@ namespace GajGamesServiceRouter.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetStudiNames()
-        {
-            var authToken = await GetAuthToken(Request);
+        {                                 
+            var response = await _storeMgmtService.GetStudioNames();
 
-            if (!string.IsNullOrEmpty(authToken))
-            {
-                var response = await _storeMgmtService.GetStudioNames(authToken);
-
-                if (response != null)
-                    return Ok(response);
-            }
-
+            if (response != null)
+                return Ok(response);
+           
             return BadRequest();
         }
 
@@ -135,16 +108,12 @@ namespace GajGamesServiceRouter.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetGameGenres()
-        {
-            var authToken = await GetAuthToken(Request);
+        {            
+            var response = await _storeMgmtService.GetGameGenres();
 
-            if (!string.IsNullOrEmpty(authToken))
-            {
-                var response = await _storeMgmtService.GetGameGenres(authToken);
+            if (response != null)
+                return Ok(response);
 
-                if (response != null)
-                    return Ok(response);
-            }
 
             return BadRequest();
         }
@@ -170,29 +139,17 @@ namespace GajGamesServiceRouter.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> SetRedisKey([FromQuery]string key, string value)
-        {
-            var authToken = await GetAuthToken(Request);
+        {            
+                  
+            var claims = HttpContext.User.Claims.Where(c => c.Type.Contains("nameidentifier"));
 
-            if (!string.IsNullOrEmpty(authToken))
-            {               
-                var claims = HttpContext.User.Claims.Where(c => c.Type.Contains("nameidentifier"));
-
-                if (claims.Count() > 0)
-                    key += $"-{claims.FirstOrDefault().Value}";
-            }
-
+            if (claims.Count() > 0)
+                key += $"-{claims.FirstOrDefault().Value}";
+         
             var response = await _redisService.SetKey(key, value);
             
             return Ok(response);            
-        }
-
-
-        private async Task<string> GetAuthToken(HttpRequest request)
-        {
-            StringValues authHeader;
-            request.Headers.TryGetValue("Authorization", out authHeader);
-            return authHeader;
-        }
+        }        
 
     }
 }

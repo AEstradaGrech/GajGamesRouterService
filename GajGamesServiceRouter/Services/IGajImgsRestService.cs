@@ -7,10 +7,10 @@ namespace GajGamesServiceRouter.Services
 {
     public interface IGajImgsRestService
     {
-        Task<ImageDto> PostImage(ImageDto dto, string userToken);
-        Task<ImageDto> GetUserImage(Guid userGuid, string userToken);
+        Task<ImageDto> PostImage(ImageDto dto);
+        Task<ImageDto> GetUserImage(Guid userGuid);
         Task<ImageDto> GetTestDto();
-        Task<ImageDto> GetGameImageByGameTitle(string gameTitle, string authToken);
-        Task<IEnumerable<ImageDto>> GetGameImagesByGameTitle(IEnumerable<string> gameTitles, string authToken);
+        Task<ImageDto> GetGameImageByGameTitle(string gameTitle);
+        Task<IEnumerable<ImageDto>> GetGameImagesByGameTitle(IEnumerable<string> gameTitles);
     }
 }

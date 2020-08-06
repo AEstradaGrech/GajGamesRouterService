@@ -17,8 +17,10 @@ namespace GajGamesServiceRouter.Services
         {
         }
 
-        public async Task<ImageDto> GetGameImageByGameTitle(string gameTitle, string authToken)
+        public async Task<ImageDto> GetGameImageByGameTitle(string gameTitle)
         {
+            var token = await GetAuthToken(HttpContext.Request);
+
             var restClient = new RestClient(ApiConfig.BaseUrl);
 
             restClient.UseJson();
@@ -28,8 +30,8 @@ namespace GajGamesServiceRouter.Services
             restReq.RequestFormat = DataFormat.Json;
 
             restReq.AddParameter("imgName", $"{gameTitle}")
-                   .AddParameter("category", $"{ImgCategory.GamesCatalogue}") //TODO add GameDetail Image to ImgService
-                   .AddHeader("Authorization", authToken);
+                   .AddParameter("category", $"{ImgCategory.GamesCatalogue}")
+                   .AddHeader("Authorization", token);
 
             Console.WriteLine($"GET GAME IMG :: URI --> {restClient.BuildUri(restReq)}");
 
@@ -37,14 +39,16 @@ namespace GajGamesServiceRouter.Services
         }
     
 
-        public async Task<IEnumerable<ImageDto>> GetGameImagesByGameTitle(IEnumerable<string> gameTitles, string authToken)
+        public async Task<IEnumerable<ImageDto>> GetGameImagesByGameTitle(IEnumerable<string> gameTitles)
         {
+            var token = await GetAuthToken(HttpContext.Request);
+
             var restClient = new RestClient(ApiConfig.BaseUrl);
 
             var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Images")}/get-catalogue-imgs", Method.POST);
 
             restReq.AddJsonBody(gameTitles)
-                   .AddHeader("Authorization", authToken);
+                   .AddHeader("Authorization", token);
             
             Console.WriteLine($"GET GAME IMGS URI :: {restClient.BuildUri(restReq)}");
             
@@ -66,8 +70,10 @@ namespace GajGamesServiceRouter.Services
             return await restClient.GetAsync<ImageDto>(restReq);
         }
 
-        public async Task<ImageDto> GetUserImage(Guid userGuid, string userToken)
+        public async Task<ImageDto> GetUserImage(Guid userGuid)
         {
+            var token = await GetAuthToken(HttpContext.Request);
+
             var restClient = new RestClient(ApiConfig.BaseUrl);
 
             restClient.UseJson();
@@ -77,21 +83,23 @@ namespace GajGamesServiceRouter.Services
             restReq.RequestFormat = DataFormat.Json;
 
             restReq.AddParameter("userGuid", $"{userGuid}")
-                   .AddHeader("Authorization", userToken);
+                   .AddHeader("Authorization", token);
 
             Console.WriteLine($"GET USER IMG :: URI --> {restClient.BuildUri(restReq)}");
 
             return await restClient.GetAsync<ImageDto>(restReq);
         }
 
-        public async Task<ImageDto> PostImage(ImageDto dto, string userToken)
+        public async Task<ImageDto> PostImage(ImageDto dto)
         {
+            var token = await GetAuthToken(HttpContext.Request);
+
             var restClient = new RestClient(ApiConfig.BaseUrl);
 
             var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Images")}/post-img", Method.POST);
 
             restReq.AddJsonBody(dto)
-                   .AddHeader("Authorization", userToken);            
+                   .AddHeader("Authorization", token);            
                         
             return await restClient.PostAsync<ImageDto>(restReq);
             

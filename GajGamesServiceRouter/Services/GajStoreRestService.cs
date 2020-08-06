@@ -16,8 +16,10 @@ namespace GajGamesServiceRouter.Services
         {
         }
 
-        public async Task<GameDetailDto> GetGameByGameId(Guid gameId, string authToken)
+        public async Task<GameDetailDto> GetGameByGameId(Guid gameId)
         {
+            var token = await GetAuthToken(HttpContext.Request);
+
             var restClient = new RestClient(ApiConfig.BaseUrl);
 
             restClient.UseJson();
@@ -27,15 +29,17 @@ namespace GajGamesServiceRouter.Services
             restReq.RequestFormat = DataFormat.Json;
 
             restReq.AddParameter("gameId", $"{gameId}")
-                   .AddHeader("Authorization", authToken);
+                   .AddHeader("Authorization", token);
 
             Console.WriteLine($"GET GAME BY ID :: URI --> {restClient.BuildUri(restReq)}");
 
             return await restClient.GetAsync<GameDetailDto>(restReq);
         }
 
-        public async Task<IEnumerable<CatalogueGameDto>> GetByStudioName(string studioName, string authToken)
+        public async Task<IEnumerable<CatalogueGameDto>> GetByStudioName(string studioName)
         {
+            var token = await GetAuthToken(HttpContext.Request);
+
             var restClient = new RestClient(ApiConfig.BaseUrl);
 
             restClient.UseJson();
@@ -45,15 +49,17 @@ namespace GajGamesServiceRouter.Services
             restReq.RequestFormat = DataFormat.Json;
 
             restReq.AddParameter("studioName", $"{studioName}")
-                   .AddHeader("Authorization", authToken);
+                   .AddHeader("Authorization", token);
 
             Console.WriteLine($"GET GAMES BY STUDIO NAME :: URI --> {restClient.BuildUri(restReq)}");
 
             return await restClient.GetAsync<IEnumerable<GameDetailDto>>(restReq);
         }
 
-        public async Task<StudioDto> GetStudioByName(string studioName, string authToken)
+        public async Task<StudioDto> GetStudioByName(string studioName)
         {
+            var token = await GetAuthToken(HttpContext.Request);
+
             var restClient = new RestClient(ApiConfig.BaseUrl);
 
             restClient.UseJson();
@@ -63,29 +69,33 @@ namespace GajGamesServiceRouter.Services
             restReq.RequestFormat = DataFormat.Json;
 
             restReq.AddParameter("studioName", $"{studioName}")
-                   .AddHeader("Authorization", authToken);
+                   .AddHeader("Authorization", token);
 
             Console.WriteLine($"GET STUDIO BY STUDIO NAME :: URI --> {restClient.BuildUri(restReq)}");
 
             return await restClient.GetAsync<StudioDto>(restReq);
         }
 
-        public async Task<CatalogueResponseDto> GetByFilter(CatalogueFilter filter, string authToken)
+        public async Task<CatalogueResponseDto> GetByFilter(CatalogueFilter filter)
         {
+            var token = await GetAuthToken(HttpContext.Request);
+
             var restClient = new RestClient(ApiConfig.BaseUrl);            
 
             var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Games")}/get-by-catalogue-filter", Method.POST);
 
             restReq.AddJsonBody(filter)
-                   .AddHeader("Authorization", authToken);
+                   .AddHeader("Authorization", token);
 
             Console.WriteLine($"GET BY FILTER :: URI --> {restClient.BuildUri(restReq)}");
 
             return await restClient.PostAsync<CatalogueResponseDto>(restReq);
         }
 
-        public async Task<IEnumerable<string>> GetStudioNames(string authToken)
+        public async Task<IEnumerable<string>> GetStudioNames()
         {
+            var token = await GetAuthToken(HttpContext.Request);
+
             var restClient = new RestClient(ApiConfig.BaseUrl);
 
             restClient.UseJson();
@@ -94,13 +104,15 @@ namespace GajGamesServiceRouter.Services
 
             restReq.RequestFormat = DataFormat.Json;
 
-            restReq.AddHeader("Authorization", authToken);
+            restReq.AddHeader("Authorization", token);
 
             return await restClient.GetAsync<IEnumerable<string>>(restReq);
         }
 
-        public async Task<IEnumerable<string>> GetGameGenres(string authToken)
+        public async Task<IEnumerable<string>> GetGameGenres()
         {
+            var token = await GetAuthToken(HttpContext.Request);
+
             var restClient = new RestClient(ApiConfig.BaseUrl);
 
             restClient.UseJson();
@@ -109,7 +121,7 @@ namespace GajGamesServiceRouter.Services
 
             restReq.RequestFormat = DataFormat.Json;
 
-            restReq.AddHeader("Authorization", authToken);
+            restReq.AddHeader("Authorization", token);
 
             return await restClient.GetAsync<IEnumerable<string>>(restReq);
         }

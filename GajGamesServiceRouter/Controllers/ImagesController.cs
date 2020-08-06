@@ -31,16 +31,11 @@ namespace GajGamesServiceRouter.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> PostImage([FromBody]ImageDto dto)
-        {
-            var authToken = await GetAuthToken(Request);
+        {                             
+            var response = await _gajImgsRestService.PostImage(dto);
 
-            if(!string.IsNullOrEmpty(authToken))
-            {
-                var response = await _gajImgsRestService.PostImage(dto, authToken);
-
-                if (response != null)
-                    return Ok(response);
-            }
+            if (response != null)
+                return Ok(response);         
             
             return BadRequest();
         }
@@ -51,17 +46,12 @@ namespace GajGamesServiceRouter.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetUserImage([FromQuery]Guid userGuid)
-        {
-            var authToken = await GetAuthToken(Request);
+        {                                    
+            var response = await _gajImgsRestService.GetUserImage(userGuid);
 
-            if (!string.IsNullOrEmpty(authToken))
-            {
-                var response = await _gajImgsRestService.GetUserImage(userGuid, authToken);
-
-                if (response != null)
-                    return Ok(response);
-            }
-
+            if (response != null)
+                return Ok(response);
+            
             return BadRequest();
         }
 
@@ -80,12 +70,6 @@ namespace GajGamesServiceRouter.Controllers
 
             return BadRequest();
         }
-
-        private async Task<string> GetAuthToken(HttpRequest request)
-        {
-            StringValues authHeader;
-            request.Headers.TryGetValue("Authorization", out authHeader);
-            return authHeader;
-        }
+   
     }
 }

@@ -7,11 +7,11 @@ namespace GajGamesServiceRouter.Services
 {
     public interface IGajStoreRestService
     {
-        Task<GameDetailDto> GetGameByGameId(Guid gameId, string authToken);
-        Task<IEnumerable<CatalogueGameDto>> GetByStudioName(string studioName, string authToken);
-        Task<StudioDto> GetStudioByName(string studioName, string authToken);
-        Task<CatalogueResponseDto> GetByFilter(CatalogueFilter filter, string authToken);
-        Task<IEnumerable<string>> GetStudioNames(string authToken);
-        Task<IEnumerable<string>> GetGameGenres(string authToken);
+        Task<GameDetailDto> GetGameByGameId(Guid gameId);
+        Task<IEnumerable<CatalogueGameDto>> GetByStudioName(string studioName);
+        Task<StudioDto> GetStudioByName(string studioName);
+        Task<CatalogueResponseDto> GetByFilter(CatalogueFilter filter);
+        Task<IEnumerable<string>> GetStudioNames();
+        Task<IEnumerable<string>> GetGameGenres();
     }
 }
