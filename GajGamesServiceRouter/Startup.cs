@@ -42,6 +42,7 @@ namespace GajGamesServiceRouter
             services.RegisterServices()
                     .AddApiConfigurations(Configuration)
                     .SetAuthorizationPolicies()
+                    .AddHttpContextAccessor()
                     .ConfigureConsul(Configuration);
 
             var cert = new X509Certificate2(Path.Combine(".", "GajCert.pfx"), "gajgames");

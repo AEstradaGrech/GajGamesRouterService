@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -165,11 +166,21 @@ namespace GajGamesServiceRouter.Controllers
 
         [HttpGet]
         [Route("test-set-redis-key")]
-        //[Authorize(Policy = "Anonymous")]
+        [Authorize(Policy = "Anonymous")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> SetRedisKey([FromQuery]string key, string value)
         {
+            var authToken = await GetAuthToken(Request);
+
+            if (!string.IsNullOrEmpty(authToken))
+            {               
+                var claims = HttpContext.User.Claims.Where(c => c.Type.Contains("nameidentifier"));
+
+                if (claims.Count() > 0)
+                    key += $"-{claims.FirstOrDefault().Value}";
+            }
+
             var response = await _redisService.SetKey(key, value);
             
             return Ok(response);            

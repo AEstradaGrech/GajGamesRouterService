@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GajGamesServiceRouter.Infrastructure.ApiConfigurations;
 using GajGamesServiceRouter.Infrastructure.Dtos;
 using GajGamesServiceRouter.Infrastructure.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
@@ -11,7 +12,8 @@ namespace GajGamesServiceRouter.Services
 {
     public class GajImgsRestService : RestServiceBase<GajImgsApiConfiguration>, IGajImgsRestService
     {
-        public GajImgsRestService(IOptions<GajImgsApiConfiguration> apiConfig) : base(apiConfig)
+        public GajImgsRestService(IOptions<GajImgsApiConfiguration> apiConfig,
+            IHttpContextAccessor contextAccessor) : base(apiConfig, contextAccessor)
         {
         }
 

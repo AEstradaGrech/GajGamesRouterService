@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using GajGamesServiceRouter.Infrastructure.ApiConfigurations;
 using GajGamesServiceRouter.Infrastructure.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
@@ -10,7 +11,8 @@ namespace GajGamesServiceRouter.Services
 {
     public class GajStoreRestService : RestServiceBase<GajStoreApiConfiguration>, IGajStoreRestService
     {
-        public GajStoreRestService(IOptions<GajStoreApiConfiguration>apiConfig) : base(apiConfig)
+        public GajStoreRestService(IOptions<GajStoreApiConfiguration>apiConfig,
+            IHttpContextAccessor contextAccessor) : base(apiConfig, contextAccessor)
         {
         }
 
