@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using Consul;
+using GajGamesServiceRouter.Infrastructure;
 using GajGamesServiceRouter.Infrastructure.ApiConfigurations;
 using GajGamesServiceRouter.Infrastructure.ConsulConfig;
 using GajGamesServiceRouter.Infrastructure.Dtos;
@@ -33,6 +34,11 @@ namespace GajGamesServiceRouter.Extensions
             return services.Configure<GajImgsApiConfiguration>(config.GetSection(nameof(GajImgsApiConfiguration)))
                            .Configure<GajUsersApiConfiguration>(config.GetSection(nameof(GajUsersApiConfiguration)))
                            .Configure<GajStoreApiConfiguration>(config.GetSection(nameof(GajStoreApiConfiguration)));
+        }
+
+        public static IServiceCollection AddRedisConfiguration(this IServiceCollection services, IConfiguration config)
+        {
+            return services.Configure<RedisConfiguration>(config.GetSection(nameof(RedisConfiguration)));
         }
 
         public static IApplicationBuilder ConfigureGlobalExceptionHandler(this IApplicationBuilder app)

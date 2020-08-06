@@ -125,7 +125,7 @@ namespace GajGamesServiceRouter.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetRedisKey([FromQuery]string key)
         {
-            var response = await _redisService.GetKeyValue(key);
+            var response = await _redisService.GetKeyStringValue(key);
 
             if (!string.IsNullOrEmpty(response))
                 return Ok(response);
@@ -146,7 +146,7 @@ namespace GajGamesServiceRouter.Controllers
             if (claims.Count() > 0)
                 key += $"-{claims.FirstOrDefault().Value}";
          
-            var response = await _redisService.SetKey(key, value);
+            var response = await _redisService.SetStringKey(key, value);
             
             return Ok(response);            
         }        
