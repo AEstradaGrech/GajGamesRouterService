@@ -113,11 +113,9 @@ namespace GajGamesServiceRouter.Services
 
         private async Task<bool> CacheCatalogueResponse(CatalogueResponseDto response)
         {
-            var json = JsonConvert.SerializeObject(response);
-
-            var catalogueGuid = $"UserNick-{Guid.NewGuid().ToString()}-{DateTime.Now}";
-
-            return await _redisService.SetKey(catalogueGuid, json);
+            var key = await _redisService.GenerateUserRedisKey(Infrastructure.Enums.RedisNamespace.CatalogueResponse);
+            
+            return await _redisService.SetKey(key, response);
         }
     }
 }

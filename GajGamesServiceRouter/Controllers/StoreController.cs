@@ -121,7 +121,7 @@ namespace GajGamesServiceRouter.Controllers
 
         [HttpGet]
         [Route("test-get-redis-key")]
-        //[Authorize(Policy = "Anonymous")]
+        [Authorize(Policy = "Anonymous")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetRedisKey([FromQuery]string key)
