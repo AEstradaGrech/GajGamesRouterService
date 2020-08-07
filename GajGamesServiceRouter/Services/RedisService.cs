@@ -41,16 +41,16 @@ namespace GajGamesServiceRouter.Services
 
         public async Task<bool> SetStringKey(string key, string value)
         {                                    
-            var db = _redisMultiplexer.GetDatabase();
+            var db = _redisMultiplexer.GetDatabase();            
 
-            return await db.StringSetAsync(key, value);            
+            return await db.StringSetAsync(key, value, expiry:_redisConfiguration.DefaultKeyExpiration);            
         }
 
         public async Task<bool> SetKey<T>(string key, T value)
         {
             var jsonValue = JsonConvert.SerializeObject(value);
 
-            return await GetDataBase().StringSetAsync(key, jsonValue);
+            return await GetDataBase().StringSetAsync(key, jsonValue, expiry: _redisConfiguration.DefaultKeyExpiration);
         }
 
         public async Task<T> GetKeyValue<T>(string key)
