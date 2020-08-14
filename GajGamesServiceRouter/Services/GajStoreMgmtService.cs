@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GajGamesServiceRouter.Infrastructure.Dtos;
+using GajGamesServiceRouter.Infrastructure.Enums;
 using Newtonsoft.Json;
 
 namespace GajGamesServiceRouter.Services
@@ -11,13 +12,16 @@ namespace GajGamesServiceRouter.Services
     {
         private readonly IGajStoreRestService _storeService;
         private readonly IGajImgsRestService _imgsService;
+        private readonly ICartMgmtService _cartMgmtService;
         private readonly IRedisService _redisService;
 
-        public GajStoreMgmtService(IGajStoreRestService storeServcice, IGajImgsRestService imgsService, IRedisService redisService)
+        public GajStoreMgmtService(IGajStoreRestService storeServcice, IGajImgsRestService imgsService,
+            IRedisService redisService, ICartMgmtService cartMgmtService)
         {
             _storeService = storeServcice;
             _imgsService = imgsService;
             _redisService = redisService;
+            _cartMgmtService = cartMgmtService;
         }
 
         public async Task<GameDetailDto> GetGameByGameId(Guid gameId)
@@ -113,9 +117,9 @@ namespace GajGamesServiceRouter.Services
 
         private async Task<bool> CacheCatalogueResponse(CatalogueResponseDto response)
         {
-            var key = await _redisService.GenerateUserRedisKey(Infrastructure.Enums.RedisNamespace.CatalogueResponse);
+            var key = await _redisService.GenerateUserRedisKey(RedisNamespace.UserCart);
             
             return await _redisService.SetKey(key, response);
-        }
+        }      
     }
 }

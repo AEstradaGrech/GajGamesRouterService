@@ -8,6 +8,8 @@ namespace GajGamesServiceRouter.Infrastructure.Dtos
         public CartDto()
         {
             Products = new List<ProductDto>();
+            TotalPrice = 0.0m;
+            CreationDate = DateTime.Now;
         }
 
         public Guid? Id { get; set; }

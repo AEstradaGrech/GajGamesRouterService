@@ -1,21 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GajGamesServiceRouter.Infrastructure.Dtos;
 using GajGamesServiceRouter.Infrastructure.Enums;
 using GajGamesServiceRouter.Infrastructure.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace GajGamesServiceRouter.Services
 {
     public class CartMgmtService : ICartMgmtService
     {
         private readonly IRedisService _redisService;
-        private readonly IGajStoreMgmtService _gajStoreMgmtService;
+        private readonly IGajUsersRestService _gajUsersRestService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CartMgmtService(IRedisService redisService, IGajStoreMgmtService gajStoreMgmtService)
+        public CartMgmtService(IRedisService redisService, IGajUsersRestService gajUsersRestService,
+            IHttpContextAccessor httpContextAccessor)
         {
             _redisService = redisService;
-            _gajStoreMgmtService = gajStoreMgmtService;
+            _gajUsersRestService = gajUsersRestService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<CartDto> GetTestRedisCart()
@@ -45,7 +50,22 @@ namespace GajGamesServiceRouter.Services
         {
             var key = await _redisService.GenerateUserRedisKey(RedisNamespace.UserCart);
 
-            return await _redisService.SetKey(key, userCart);
+            return await _redisService.SetKey(key, userCart);            
+        }
+
+        private async Task<bool> IsAnonymousUser()
+        {
+            var subClaim = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type.Contains("nameidentifier"));
+
+            if(subClaim != null)
+            {
+                string[] claimSplitted = subClaim.Value.Split('_');
+
+                if (claimSplitted[0] == "anon")
+                    return true;
+            }
+
+            return false;
         }
 
         public async Task<bool> AddProductToCart(ProductDto product)
@@ -85,6 +105,43 @@ namespace GajGamesServiceRouter.Services
             }
 
             return false;
+        }
+
+        public async Task<CartDto> InitCustomerCart()
+        {
+            var userCart = new CartDto
+            {
+                Id = null,
+                CustomerId = new Guid(),
+                CustomerAccountId = null,
+                CreationDate = DateTime.Now,
+                Products = new List<ProductDto>(),
+                TotalPrice = 0m
+            };
+
+            if (!await IsAnonymousUser())
+            {
+                var subClaim = _httpContextAccessor.HttpContext.User.Claims.SingleOrDefault(c => c.Type.Contains("nameidentifier"));
+
+                if (!string.IsNullOrEmpty(subClaim.Value))
+                {
+                    var user = await _gajUsersRestService.GetUserByNickname(subClaim.Value);
+
+                    if (user != null)
+                        userCart.CustomerId = user.Id;
+
+                    //TODO: GetAccountId();
+                }
+            }
+
+            var key = await _redisService.GenerateUserRedisKey(RedisNamespace.UserCart);
+
+            var init = await _redisService.SetKey(key, userCart);
+
+            if (init)
+                return await _redisService.GetKeyValue<CartDto>(key);
+
+            return null;
         }
     }
 }

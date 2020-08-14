@@ -6,6 +6,6 @@ namespace GajGamesServiceRouter.Services
 {
     public interface IGajUsersRestService
     {
-        Task<UserDto> GetUserByNickname(string userNick);
+        Task<UserDto> GetUserByNickname(string userNick);        
     }
 }

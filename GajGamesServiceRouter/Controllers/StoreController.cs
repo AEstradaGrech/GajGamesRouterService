@@ -124,7 +124,7 @@ namespace GajGamesServiceRouter.Controllers
         [Authorize(Policy = "Anonymous")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetRedisCart([FromQuery]string key)
+        public async Task<IActionResult> GetRedisCart()
         {
             var response = await _cartMgmtService.GetUserRedisCart();
 
@@ -159,11 +159,26 @@ namespace GajGamesServiceRouter.Controllers
         }
 
         [HttpGet]
+        [Route("init-customer-cart")]
+        [Authorize(Policy = "Anonymous")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> InitCustomerCart()
+        {
+            var response = await _cartMgmtService.InitCustomerCart();
+
+            if (response != null)
+                return Ok(response);
+
+            return BadRequest();
+        }
+
+        [HttpGet]
         [Route("test-get-redis-key")]
         [Authorize(Policy = "Anonymous")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> GetRedisKey([FromQuery]string key)
+        public async Task<IActionResult> GetRedisKey()
         {
             var response = await _cartMgmtService.GetTestRedisCart();
 
@@ -178,7 +193,7 @@ namespace GajGamesServiceRouter.Controllers
         [Authorize(Policy = "Anonymous")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> SetRedisStringKey([FromQuery]string value)
+        public async Task<IActionResult> SetRedisStringKey()
         {            
             var response = await _cartMgmtService.SetTestRedisCart();
             
