@@ -20,12 +20,12 @@ namespace GajGamesServiceRouter.Controllers
     public class StoreController : Controller
     {
         private readonly IGajStoreMgmtService _storeMgmtService;
-        private readonly IRedisService _redisService;
+        private readonly ICartMgmtService _cartMgmtService;
 
-        public StoreController(IGajStoreMgmtService storeMgmtService, IRedisService redisService)
+        public StoreController(IGajStoreMgmtService storeMgmtService, ICartMgmtService cartMgmtService)
         {
             _storeMgmtService = storeMgmtService;
-            _redisService = redisService;
+            _cartMgmtService = cartMgmtService;
         }
 
         [HttpGet]
@@ -120,15 +120,54 @@ namespace GajGamesServiceRouter.Controllers
         }
 
         [HttpGet]
+        [Route("get-user-redis-cart")]
+        [Authorize(Policy = "Anonymous")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> GetRedisCart([FromQuery]string key)
+        {
+            var response = await _cartMgmtService.GetUserRedisCart();
+
+            if (response != null)
+                return Ok(response);
+
+            return BadRequest();
+        }
+
+        [HttpPost]
+        [Route("add-product-to-cart")]
+        [Authorize(Policy = "Anonymous")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> AddProductToCart([FromBody]ProductDto product)
+        {
+            var response = await _cartMgmtService.AddProductToCart(product);
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("set-user-redis-cart")]
+        [Authorize(Policy = "Anonymous")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> SetUserCart([FromBody]CartDto userCart)
+        {
+            var response = await _cartMgmtService.SetUserCart(userCart);
+
+            return Ok(response);
+        }
+
+        [HttpGet]
         [Route("test-get-redis-key")]
         [Authorize(Policy = "Anonymous")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetRedisKey([FromQuery]string key)
         {
-            var response = await _redisService.GetKeyStringValue(key);
+            var response = await _cartMgmtService.GetTestRedisCart();
 
-            if (!string.IsNullOrEmpty(response))
+            if (response != null)
                 return Ok(response);
             
             return BadRequest();
@@ -140,13 +179,11 @@ namespace GajGamesServiceRouter.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> SetRedisStringKey([FromQuery]string value)
-        {
-            var key = await _redisService.GenerateUserRedisKey(RedisNamespace.CatalogueResponse);
-
-            var response = await _redisService.SetStringKey(key, value);
+        {            
+            var response = await _cartMgmtService.SetTestRedisCart();
             
             return Ok(response);            
-        }        
+        }
 
     }
 }
