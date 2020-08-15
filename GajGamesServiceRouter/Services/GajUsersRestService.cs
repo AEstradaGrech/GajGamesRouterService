@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GajGamesServiceRouter.Infrastructure.ApiConfigurations;
 using GajGamesServiceRouter.Infrastructure.Dtos;
@@ -16,43 +17,17 @@ namespace GajGamesServiceRouter.Services
         }
 
         public async Task<UserDto> GetUserByNickname(string userNick)
-        {
-            var token = await GetAuthToken(HttpContext.Request);
+        {                      
+            QueryParams[nameof(userNick)] = userNick;            
 
-            var restClient = new RestClient(ApiConfig.BaseUrl);
-
-            restClient.UseJson();
-
-            var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Users")}/get-by-nickname", Method.GET);
-
-            restReq.RequestFormat = DataFormat.Json;
-
-            restReq.AddParameter("userNick", $"{userNick}")
-                   .AddHeader("Authorization", token);
-
-            Console.WriteLine($"GET USER BY NICKNAME:: URI --> {restClient.BuildUri(restReq)}");
-
-            return await restClient.GetAsync<UserDto>(restReq);
+            return await GetTAsync<UserDto>($"{ApiConfig.EndpointByKey("Users")}/get-by-nickname");                 
         }
 
-        public async Task<Guid> GetUserIdByNickname(string userNick)
-        {
-            var token = await GetAuthToken(HttpContext.Request);
+        public async Task<Guid> GetUserIdByNickname(string nickName)
+        {            
+            QueryParams[nameof(nickName)] = nickName;            
 
-            var restClient = new RestClient(ApiConfig.BaseUrl);
-
-            restClient.UseJson();
-
-            var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Users")}/get-userId-by-nickname", Method.GET);
-
-            restReq.RequestFormat = DataFormat.Json;
-
-            restReq.AddParameter("nickName", $"{userNick}")
-                   .AddHeader("Authorization", token);
-
-            Console.WriteLine($"GET USER ID BY NICKNAME:: URI --> {restClient.BuildUri(restReq)}");
-
-            return await restClient.GetAsync<Guid>(restReq);
+            return await GetTAsync<Guid>($"{ApiConfig.EndpointByKey("Users")}/get-userId-by-nickname");
         }
     }
 }

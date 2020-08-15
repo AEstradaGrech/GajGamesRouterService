@@ -72,13 +72,19 @@ namespace GajGamesServiceRouter.Services
         {            
             var cart = await GetUserRedisCart();
 
+            Console.WriteLine($"ADDING PRODUCT TO CART :: {cart}");
+
             if (cart != null)
             {
+                Console.WriteLine($"PRODUCT :: {product}");
+
                 cart.Products.Add(product);
 
                 cart.TotalPrice += product.Price;
 
                 var key = await _redisService.GenerateUserRedisKey(RedisNamespace.UserCart);
+
+                Console.WriteLine($"ADDING PRODUCT TO CART :: {cart} :: KEY :: {key}");
 
                 return await _redisService.SetKey(key, cart);
             }
@@ -99,6 +105,8 @@ namespace GajGamesServiceRouter.Services
                     cart.Products.Remove(productToRemove);
 
                     var key = await _redisService.GenerateUserRedisKey(RedisNamespace.UserCart);
+
+                    Console.WriteLine($"REMOVING PRODUCT FROM CART :: {cart} :: KEY :: {key}");
 
                     return await _redisService.SetKey(key, cart);
                 }
@@ -125,10 +133,10 @@ namespace GajGamesServiceRouter.Services
 
                 if (!string.IsNullOrEmpty(subClaim.Value))
                 {
-                    var user = await _gajUsersRestService.GetUserByNickname(subClaim.Value);
+                    var userId = await _gajUsersRestService.GetUserIdByNickname(subClaim.Value);
 
-                    if (user != null)
-                        userCart.CustomerId = user.Id;
+                    if (userId != null)
+                        userCart.CustomerId = userId;
 
                     //TODO: GetAccountId();
                 }
