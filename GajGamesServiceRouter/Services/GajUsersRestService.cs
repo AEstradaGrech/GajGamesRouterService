@@ -34,5 +34,25 @@ namespace GajGamesServiceRouter.Services
 
             return await restClient.GetAsync<UserDto>(restReq);
         }
+
+        public async Task<Guid> GetUserIdByNickname(string userNick)
+        {
+            var token = await GetAuthToken(HttpContext.Request);
+
+            var restClient = new RestClient(ApiConfig.BaseUrl);
+
+            restClient.UseJson();
+
+            var restReq = new RestRequest($"{ApiConfig.EndpointByKey("Users")}/get-userId-by-nickname", Method.GET);
+
+            restReq.RequestFormat = DataFormat.Json;
+
+            restReq.AddParameter("nickName", $"{userNick}")
+                   .AddHeader("Authorization", token);
+
+            Console.WriteLine($"GET USER ID BY NICKNAME:: URI --> {restClient.BuildUri(restReq)}");
+
+            return await restClient.GetAsync<Guid>(restReq);
+        }
     }
 }
