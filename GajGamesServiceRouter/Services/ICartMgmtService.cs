@@ -13,5 +13,6 @@ namespace GajGamesServiceRouter.Services
         Task<bool> SetUserCart(CartDto userCart);
         Task<bool> AddProductToCart(ProductDto product);
         Task<bool> RemoveProductFromCart(string productId);
+        Task<CartDto> RemoveAllFromCart();
     }
 }

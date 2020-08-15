@@ -158,6 +158,21 @@ namespace GajGamesServiceRouter.Controllers
             return Ok(response);
         }
 
+        [HttpDelete]
+        [Route("remove-all-from-cart")]
+        [Authorize(Policy = "Anonymous")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> RemoveAllFromCart()
+        {
+            var response = await _cartMgmtService.RemoveAllFromCart();
+
+            if(response != null)
+                return Ok(response);
+
+            return BadRequest();
+        }
+
         [HttpPost]
         [Route("set-user-redis-cart")]
         [Authorize(Policy = "Anonymous")]

@@ -104,6 +104,8 @@ namespace GajGamesServiceRouter.Services
                 {
                     cart.Products.Remove(productToRemove);
 
+                    cart.TotalPrice -= productToRemove.Price;
+
                     var key = await _redisService.GenerateUserRedisKey(RedisNamespace.UserCart);
 
                     Console.WriteLine($"REMOVING PRODUCT FROM CART :: {cart} :: KEY :: {key}");
@@ -148,6 +150,25 @@ namespace GajGamesServiceRouter.Services
 
             if (init)
                 return await _redisService.GetKeyValue<CartDto>(key);
+
+            return null;
+        }
+
+        public async Task<CartDto> RemoveAllFromCart()
+        {
+            var key = await _redisService.GenerateUserRedisKey(RedisNamespace.UserCart);
+
+            var cart = await _redisService.GetKeyValue<CartDto>(key);
+
+            if(cart != null)
+            {
+                cart.Products = new List<ProductDto>();
+
+                cart.TotalPrice = 0.0m;
+
+                if (await _redisService.SetKey(key, cart))
+                    return await _redisService.GetKeyValue<CartDto>(key);
+            }
 
             return null;
         }
